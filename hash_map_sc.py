@@ -1,11 +1,3 @@
-# Name: Lamar Petty
-# OSU Email: pettyla@oregonstate.edu
-# Course: CS261 - Data Structures
-# Assignment: 6
-# Due Date: 17 MAR 2023
-# Description: Hashmap implementation
-
-
 from a6_include import (DynamicArray, LinkedList,
                         hash_function_1, hash_function_2)
 
