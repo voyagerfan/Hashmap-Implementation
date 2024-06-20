@@ -88,7 +88,5 @@ class TestCase(unittest.TestCase):
             with self.subTest(i+1):
                 self.assertEqual(output[i], answer_key[i], f'failed subtest table_load subtest {i+1}')
 
-
-
 if __name__ == '__main__':
     unittest.main()

@@ -1,10 +1,3 @@
-# Name: Lamar Petty
-# OSU Email: pettyla@oregonstate.edu
-# Course: CS261 - Data Structures
-# Assignment: 6
-# Due Date: 17 MAR 2023
-# Description: Hashmap Implementation
-
 from a6_include import (DynamicArray, DynamicArrayException, HashEntry,
                         hash_function_1, hash_function_2)
 
@@ -393,7 +386,7 @@ class HashMap:
 
 # ------------------- BASIC TESTING ---------------------------------------- #
 
-
+"""
 if __name__ == "__main__":
 
     print("\nPDF - put example 1")
@@ -600,64 +593,4 @@ if __name__ == "__main__":
     print(m)
     for item in m:
         print('K:', item.key, 'V:', item.value)
-        
-
-"""
-#===============STUDENT TESTING ==========================#
-
-print("\nPDF - put example 1")
-print("-------------------")
-m = HashMap(53, hash_function_1)
-for i in range(150):
-    m.put('str' + str(i), i * 100)
-    if i % 25 == 24:
-        print(m.empty_buckets(), round(m.table_load(), 2), m.get_size(), m.get_capacity())
-
-
-print("\nPDF - put example 2")
-print("-------------------")
-m = HashMap(41, hash_function_2)
-for i in range(50):
-    m.put('str' + str(i // 3), i * 100)
-    if i % 10 == 9:
-        print(m.empty_buckets(), round(m.table_load(), 2), m.get_size(), m.get_capacity())
-
-print("\nPDF - contains_key example 1")
-print("----------------------------")
-m = HashMap(11, hash_function_1)
-print(m.contains_key('key1'))
-m.put('key1', 10)
-m.put('key2', 20)
-m.put('key3', 30)
-print(m.contains_key('key1'))
-print(m.contains_key('key4'))
-print(m.contains_key('key2'))
-print(m.contains_key('key3'))
-m.remove('key3')
-print(m.contains_key('key3'))
-
-print("\nPDF - remove example 1")
-print("----------------------")
-m = HashMap(53, hash_function_1)
-print(m.get('key1'))
-m.put('key1', 10)
-print(m.get('key1'))
-m.remove('key1')
-print(m.get('key1'))
-m.remove('key4')
-
-print("\nPDF - get_keys_and_values example 1")
-print("------------------------")
-m = HashMap(11, hash_function_2)
-for i in range(1, 6):
-    m.put(str(i), str(i * 10))
-print(m.get_keys_and_values())
-
-m.resize_table(2)
-print(m.get_keys_and_values())
-
-m.put('20', '200')
-m.remove('1')
-m.resize_table(12)
-print(m.get_keys_and_values())
 """
