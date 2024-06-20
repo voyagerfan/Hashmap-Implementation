@@ -3,8 +3,6 @@
 Welcome to my Hashmap Implementation!
 
 ## Table of Contents
-- [Hashmap-Implementation](#hashmap-implementation)
-  - [Table of Contents](#table-of-contents)
   - [Overview](#overview)
   - [App File Structure](#app-file-structure)
   - [Features](#features)
