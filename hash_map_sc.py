@@ -106,8 +106,7 @@ class HashMap:
         hashed_key = self._hash_function(key)
         index = hashed_key % self._capacity
 
-
-        #search for duplicates keys
+        # search for duplicates keys
         found = False
 
         for node in self._buckets[index]:
@@ -116,10 +115,10 @@ class HashMap:
                 found = True
                 break
 
-        if found == True:
+        if found:
             return
 
-        #insert
+        # insert
         self._size += 1
         self._buckets[index].insert(key, value)
 
@@ -131,7 +130,7 @@ class HashMap:
         """
 
         counter = 0
-        #loop through and count non-empty buckets
+        # loop through and count non-empty buckets
         for i in range(0, self._capacity, 1):
             if self._buckets[i].length() != 0:
                 counter += 1
@@ -139,7 +138,6 @@ class HashMap:
         numEmpty = self._capacity - counter
 
         return numEmpty
-
 
     def table_load(self) -> float:
         """
@@ -160,18 +158,18 @@ class HashMap:
         :return: NONE
         """
 
-        #preserve the capacity
+        # preserve the capacity
         current_cap = self._capacity
 
-        #preserve the hash function
+        # preserve the hash function
         function = self._hash_function
 
-        #add linked List to each bucket
+        # add linked List to each bucket
         for i in range(0, self._capacity, 1):
             if self._buckets[i].length() != 0:
                 self._buckets[i] = LinkedList()
 
-        #reset self
+        # reset self
         self._size = 0
         self = HashMap(current_cap, function)
         self._capacity = current_cap
@@ -187,15 +185,15 @@ class HashMap:
         if new_capacity < 1:
             return
 
-        #preserve old capacity
+        # preserve old capacity
         old_capacity = self._capacity
 
         right_cap = self._is_prime(new_capacity)
-        #if capacity is already prime, move on
+        # if capacity is already prime, move on
         if right_cap:
             self._capacity = new_capacity
 
-        #else, loop until capacity is prime
+        # else, loop until capacity is prime
         else:
             while right_cap is not True:
                 right_cap = self._next_prime(new_capacity)
@@ -203,23 +201,23 @@ class HashMap:
                     self._capacity = right_cap
                     break
 
-        #create new_da to copy hashmap
+        # create new_da to copy hashmap
         new_da = DynamicArray()
 
-        #for loop copying copy self to new
+        # for loop copying copy self to new
         j = 0
         for i in range(0, old_capacity, 1):
             new_da.append(self._buckets[i])
             j += 1
 
-        #reset buckets, size, and set to None
+        # reset buckets, size, and set to None
         self._buckets = DynamicArray()
         self._size = 0
 
         for i in range(0, self._capacity, 1):
             self._buckets.append(LinkedList())
 
-        #rehash
+        # rehash
         daLength = new_da.length()
         for i in range(0, daLength, 1):
             if new_da[i].length() != 0:
@@ -236,17 +234,16 @@ class HashMap:
         :param key: string
         :return: value (object)
         """
-        #hash the key to get index
+        # hash the key to get index
         hashed_key = self._hash_function(key)
         index = hashed_key % self._capacity
 
         found = None
-        #iterate and if key is found, return the node value
+        # iterate and if key is found, return the node value
         for node in self._buckets[index]:
             if key == node.key:
                 found = node.value
                 break
-
 
         return found
 
@@ -269,7 +266,6 @@ class HashMap:
                 found = True
                 break
 
-
         return found
 
     def remove(self, key: str) -> None:
@@ -285,7 +281,7 @@ class HashMap:
         index = hashed_key % self._capacity
 
         removed = False
-        #iterate and if key is found, remove it
+        # iterate and if key is found, remove it
         for node in self._buckets[index]:
             if key == node.key:
                 removed = self._buckets[index].remove(key)
@@ -301,10 +297,10 @@ class HashMap:
         :return: key/value pair (Dynamic Array)
         """
 
-        #initialize new array and tuple
+        # initialize new array and tuple
         new_da = DynamicArray()
 
-        #load tuple w/ key value and add to new_da
+        # load tuple w/ key value and add to new_da
         for i in range(0, self._capacity, 1):
             if self._buckets[i].length() != 0:
                 for node in self._buckets[i]:
@@ -313,8 +309,6 @@ class HashMap:
                     node = node.next
 
         return new_da
-
-
 
 def find_mode(da: DynamicArray) -> (DynamicArray, int):
     """
@@ -325,11 +319,11 @@ def find_mode(da: DynamicArray) -> (DynamicArray, int):
     :return: Dynamic array, mode (int)
     """
 
-    #initialize map
+    # initialize map
     map = HashMap()
     new_da = DynamicArray()
 
-    #Put elements into hasmap (similar to put method)
+    # Put elements into hasmap (similar to put method)
     for i in range(0, da.length(), 1):
         # check to see if table needs resizing
         if map.table_load() >= 1.0:
@@ -339,42 +333,41 @@ def find_mode(da: DynamicArray) -> (DynamicArray, int):
         hashed_key = map._hash_function(da[i])
         index = hashed_key % map._capacity
 
-        #load the map
-        #if empty bucket, insert with count of 1
+        # load the map
+        # if empty bucket, insert with count of 1
         if map._buckets[index].length() == 0:
             map._size += 1
             map._buckets[index].insert(da[i], 1)
         else:
-        #if not empty
+            # if not empty
             counter = 0
             for node in map._buckets[index]:
                 counter += 1
-                #if initial node, increment freq if same
+                # if initial node, increment freq if same
                 if da[i] == node.key:
                     node.value += 1
                     break
-                #increment next bucket if not initial bucket
+                # increment next bucket if not initial bucket
                 if counter == map._buckets[index].length():
                     map._buckets[index].insert(da[i], 1)
                 node = node.next
 
-    #Build a array of tuples
+    # Build a array of tuples
     count_arr = map.get_keys_and_values()
 
-    #find max and append
+    # find max and append
     max = 0
     arrLength = count_arr.length()
     for i in range(0, arrLength, 1):
         if count_arr[i][1] == max:
             new_da.append(count_arr[i][0])
         if count_arr[i][1] > max:
-            #if new max, clear the array, re-append
+            # if new max, clear the array, re-append
             new_da = DynamicArray()
             max = count_arr[i][1]
             new_da.append(count_arr[i][0])
 
-
-    return (new_da, max)
+    return new_da, max
 # ------------------- BASIC TESTING ---------------------------------------- #
 
 
@@ -576,33 +569,3 @@ if __name__ == "__main__":
         da = DynamicArray(case)
         mode, frequency = find_mode(da)
         print(f"Input: {da}\nMode : {mode}, Frequency: {frequency}\n")
-
-
-"""
-#=============Student Testing Block ================#
-print("\nPDF - put example 1")
-print("-------------------")
-m = HashMap(53, hash_function_1)
-for i in range(150):
-    m.put('str' + str(i), i * 100)
-    if i % 25 == 24:
-        print(m.empty_buckets(), round(m.table_load(), 2), m.get_size(), m.get_capacity())
-
-print("\nPDF - find_mode example 1 w/ gradescope example")
-print("-----------------------------")
-da = DynamicArray(['914', '987', '689', '-917', '-213', '41', '2', '-983', '-983', '-983', '-370', '-548', '-548', '-548'])
-mode, frequency = find_mode(da)
-print(f"Input: {da}\nMode : {mode}, Frequency: {frequency}")
-
-
-print("\nPDF - find_mode example 2")
-print("-----------------------------")
-test_cases = (
-    ["Arch", "Manjaro", "Manjaro", "Mint", "Mint", "Mint", "Ubuntu", "Ubuntu", "Ubuntu"],
-    ["one", "two", "three", "four", "five"],
-    ["2", "4", "2", "6", "8", "4", "1", "3", "4", "5", "7", "3", "3", "2"])
-
-for case in test_cases:
-    da = DynamicArray(case)
-    mode, frequency = find_mode(da)
-    print(f"Input: {da}\nMode : {mode}, Frequency: {frequency}\n")"""

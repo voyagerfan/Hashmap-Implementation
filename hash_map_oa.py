@@ -99,26 +99,26 @@ class HashMap:
             new_capacity = 2 * self._capacity
             self.resize_table(new_capacity)
 
-        #determine hash and index
+        # determine hash and index
         hashed_key = self._hash_function(key)
-        index = hashed_key % self._capacity #change from size to capacity
+        index = hashed_key % self._capacity  # change from size to capacity
 
-        #create new tuple with key/value pair
+        # create new tuple with key/value pair
         hash_object = HashEntry(key, value)
 
-        #set value to index if index = None
-        #else, advance to next None and add
-        if self._buckets[index] == None or self._buckets[index].is_tombstone == True:
+        # set value to index if index = None
+        # else, advance to next None and add
+        if self._buckets[index] is None or self._buckets[index].is_tombstone is True:
             self._size += 1
             self._buckets[index] = hash_object
             return
         else:
-            #if the initial placement index is already beyond
+            # if the initial placement index is already beyond
             initial_index = index
             j = 1
             while self._buckets[index] is not None:
                 if self._buckets[index].key == key:
-                    if self._buckets[index].is_tombstone == True:
+                    if self._buckets[index].is_tombstone is True:
                         self._buckets[index] = hash_object
                         self._size += 1
                     else:
@@ -127,10 +127,8 @@ class HashMap:
                 index = (initial_index + (j*j)) % self._capacity
                 j += 1
 
-
         self._size += 1
         self._buckets[index] = hash_object
-
 
     def table_load(self) -> float:
         """
@@ -158,7 +156,6 @@ class HashMap:
 
         return numEmpty
 
-
     def resize_table(self, new_capacity: int) -> None:
         """
         Resizes the hash table with the given input param.
@@ -171,14 +168,14 @@ class HashMap:
         if new_capacity < self._size:
             return
 
-        #preserve old capacity
+        # preserve old capacity
         old_capacity = self._capacity
 
         right_cap = self._is_prime(new_capacity)
-        #if capacity is prime, move on
+        # if capacity is prime, move on
         if right_cap:
             self._capacity = new_capacity
-        #else, go to next prime
+        # else, go to next prime
         else:
             while right_cap is not True:
                 right_cap = self._next_prime(new_capacity)
@@ -186,23 +183,23 @@ class HashMap:
                     self._capacity = right_cap
                     break
 
-        #create new_da to copy hashmap
+        # create new_da to copy hashmap
         new_da = DynamicArray()
 
-        #for loop copying copy self to new
+        # for loop copying self to new
         j = 0
         for i in range(0, old_capacity, 1):
             new_da.append(self._buckets[i])
             j += 1
 
-        #reset buckets, size, and set to None
+        # reset buckets, size, and set to None
         self._buckets = DynamicArray()
         self._size = 0
 
         for i in range(0, self._capacity, 1):
             self._buckets.append(None)
 
-        #rehash
+        # rehash
         daLength = new_da.length()
         for i in range(0, daLength, 1):
             hash_object = new_da[i]
@@ -210,8 +207,6 @@ class HashMap:
                 key = hash_object.key
                 value = hash_object.value
                 self.put(key, value)
-
-
 
     def get(self, key: str) -> object:
         """
@@ -226,17 +221,17 @@ class HashMap:
         hashed_key = self._hash_function(key)
         index = hashed_key % self._capacity
 
-        #quadratic probe and loop
+        # quadratic probe and loop
         j = 1
         initial_index = index
         while j <= self._capacity - 1:
 
             hash_object = self._buckets[index]
-            #if the index is occupied, check for correct key
+            # if the index is occupied, check for correct key
             if hash_object is not None:
                 search_key = hash_object.key
                 if key == search_key:
-                    if hash_object.is_tombstone == True:
+                    if hash_object.is_tombstone is True:
                         value = None
                         break
                     else:
@@ -257,11 +252,11 @@ class HashMap:
         """
 
         found = False
-        #hash the key to generate lookup index
+        # hash the key to generate lookup index
         hashed_key = self._hash_function(key)
         index = hashed_key % self._capacity
 
-        #loop and quadratic probe
+        # loop and quadratic probe
         j = 1
         initial_index = index
         while j <= self._capacity-1:
@@ -272,13 +267,13 @@ class HashMap:
             if hash_object is not None:
                 search_key = hash_object.key
                 if key == search_key:
-                    if hash_object.is_tombstone == True:
+                    if hash_object.is_tombstone is True:
                         found = False
                         break
                     else:
                         found = True
                         break
-            #advance index with quadratic probing (removed modulo)
+            # advance index with quadratic probing (removed modulo)
             index = (initial_index + (j * j)) % self._capacity
             j += 1
 
@@ -305,7 +300,7 @@ class HashMap:
             if hash_object is not None:
                 search_key = hash_object.key
                 if key == search_key:
-                    if hash_object.is_tombstone == True:
+                    if hash_object.is_tombstone is True:
                         return
                     else:
                         hash_object.is_tombstone = True
@@ -324,22 +319,21 @@ class HashMap:
 
         :return: NONE
         """
-        #preserve the current capacity
+        # preserve the current capacity
         current_cap = self._capacity
 
-        #preserve the hash function
+        # preserve the hash function
         function = self._hash_function
 
-        #create none values
+        # create none values
         for i in range(0, self._capacity, 1):
             if self._buckets[i] is not None:
                 self._buckets[i] = None
 
-        #reset self
+        # reset self
         self._size = 0
         self = HashMap(current_cap, function)
         self._capacity = current_cap
-
 
     def get_keys_and_values(self) -> DynamicArray:
         """
@@ -347,22 +341,21 @@ class HashMap:
 
         :return: key/value pair (Dynamic Array)
         """
-        #initialize new array and tuple
+        # initialize new array and tuple
         new_da = DynamicArray()
 
-        #load tuple w/ key value and add to new_da
+        # load tuple w/ key value and add to new_da
         for i in range(0, self._capacity, 1):
             hash_object = self._buckets[i]
-            if hash_object is not None and hash_object.is_tombstone == False:
+            if hash_object is not None and hash_object.is_tombstone is False:
                 keyVal_tuple = (hash_object.key, hash_object.value)
                 new_da.append(keyVal_tuple)
 
         return new_da
 
-
     def __iter__(self):
         """
-        Initiolizes an index variable for interation.
+        Initializes an index variable for interation.
 
         :return: self
         """
@@ -383,18 +376,18 @@ class HashMap:
         except DynamicArrayException:
             raise StopIteration
 
-        #iterate over None and Tombstones (invalid items)
-        while hash_object == None or hash_object.is_tombstone == True:
+        # iterate over None and Tombstones (invalid items)
+        while hash_object is None or hash_object.is_tombstone is True:
             self._index += 1
             try:
                 hash_object = self._buckets[self._index]
             except DynamicArrayException:
                 raise StopIteration
 
-        #set the hash object
+        # set the hash object
         hash_object = self._buckets[self._index]
 
-        #increment the index
+        # increment the index
         self._index += 1
         return hash_object
 
